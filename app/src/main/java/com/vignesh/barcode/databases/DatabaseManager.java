@@ -7,8 +7,9 @@ package com.vignesh.barcode.databases;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.barcode.app.AppController;
-import com.barcode.common.AppLog;
+
+import com.vignesh.barcode.app.AppController;
+import com.vignesh.barcode.common.AppLog;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

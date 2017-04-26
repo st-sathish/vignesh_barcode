@@ -6,8 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.barcode.R;
-import com.barcode.extras.AppConstants;
+import com.vignesh.barcode.R;
+import com.vignesh.barcode.extras.AppConstants;
+
 
 /**
  * Created by sysadmin on 23/3/17.

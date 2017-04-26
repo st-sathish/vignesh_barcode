@@ -17,16 +17,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.barcode.R;
-import com.barcode.SessionStore;
-import com.barcode.adapter.BillAdapter;
-import com.barcode.adapter.CustomPrintAdapter;
-import com.barcode.commodity.BillProcess;
-import com.barcode.commodity.Commodity;
-import com.barcode.commodity.CommodityOperationType;
-import com.barcode.databases.DatabaseManager;
-import com.barcode.extras.AppConstants;
-import com.barcode.extras.DateUtils;
+
+import com.vignesh.barcode.R;
+import com.vignesh.barcode.SessionStore;
+import com.vignesh.barcode.adapter.BillAdapter;
+import com.vignesh.barcode.adapter.CustomPrintAdapter;
+import com.vignesh.barcode.commodity.BillProcess;
+import com.vignesh.barcode.commodity.Commodity;
+import com.vignesh.barcode.commodity.CommodityOperationType;
+import com.vignesh.barcode.databases.DatabaseManager;
+import com.vignesh.barcode.extras.AppConstants;
+import com.vignesh.barcode.extras.DateUtils;
 
 import java.util.ArrayList;
 import java.util.List;

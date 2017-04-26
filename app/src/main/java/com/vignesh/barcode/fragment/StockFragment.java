@@ -12,13 +12,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.barcode.LandingPageActivity;
-import com.barcode.LoginActivity;
-import com.barcode.R;
-import com.barcode.commodity.Commodity;
-import com.barcode.commodity.CommodityOperationType;
-import com.barcode.databases.DatabaseManager;
-import com.barcode.extras.AppConstants;
+import com.vignesh.barcode.LandingPageActivity;
+import com.vignesh.barcode.MainActivity;
+import com.vignesh.barcode.R;
+import com.vignesh.barcode.commodity.Commodity;
+import com.vignesh.barcode.commodity.CommodityOperationType;
+import com.vignesh.barcode.databases.DatabaseManager;
+import com.vignesh.barcode.extras.AppConstants;
 
 /**
  * Created by sysadmin on 23/3/17.
@@ -73,7 +73,7 @@ public class StockFragment extends BaseFragment implements View.OnClickListener 
                 getData();
                 break;
             case R.id.end:
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
                 break;
             case R.id.button_update:

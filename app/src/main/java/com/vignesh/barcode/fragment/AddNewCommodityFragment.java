@@ -74,7 +74,7 @@ public class AddNewCommodityFragment extends BaseFragment implements View.OnClic
                 insertOrUpgrade();
                 switchFragment(LandingPageActivity.FRAGMENT_MENU, "Menu");
                 break;
-            case R.id.logout:
+            /*case R.id.logout:
                 Intent intent  = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
                 break;
@@ -82,7 +82,7 @@ public class AddNewCommodityFragment extends BaseFragment implements View.OnClic
                 Intent i  = new Intent(mParentView.getContext(),MenuFragment.class);
                 mParentView.getContext().startActivity(i);
                 getActivity().finish();
-                break;
+                break;*/
         }
     }
 

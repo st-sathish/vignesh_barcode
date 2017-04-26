@@ -59,7 +59,7 @@ public class UpdateCommodityFargment extends BaseFragment implements View.OnClic
 
         button_update = (Button) mParentView.findViewById(R.id.add_commodity12);
         button_home = (Button) mParentView.findViewById(R.id.home);
-        button_logout = (Button) mParentView.findViewById(R.id.logout);
+        //button_logout = (Button) mParentView.findViewById(R.id.logout);
         button_search = (Button) mParentView.findViewById(R.id.button_search);
         button_logout.setOnClickListener(this);
         button_home.setOnClickListener(this);
@@ -79,7 +79,7 @@ public class UpdateCommodityFargment extends BaseFragment implements View.OnClic
             case R.id.button_search:
                 search();
                 break;
-            case R.id.home:
+            /*case R.id.home:
                 Intent i  = new Intent(mParentView.getContext(), MenuFragment.class);
                 mParentView.getContext().startActivity(i);
                 getActivity().finish();
@@ -87,7 +87,7 @@ public class UpdateCommodityFargment extends BaseFragment implements View.OnClic
             case R.id.logout:
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
-                break;
+                break;*/
         }
     }
 
