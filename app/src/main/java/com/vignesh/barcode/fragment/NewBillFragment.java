@@ -143,7 +143,7 @@ public class NewBillFragment extends  BaseFragment implements View.OnClickListen
             case R.id.next:
                 pressnext();
                 break;
-            case R.id.new_bill:
+            case R.id.biil_process:
                 pressNewBill();
                 break;
             case R.id.print:

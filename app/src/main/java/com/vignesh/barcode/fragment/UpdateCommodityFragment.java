@@ -1,6 +1,5 @@
 package com.vignesh.barcode.fragment;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -13,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.vignesh.barcode.LandingPageActivity;
-import com.vignesh.barcode.MainActivity;
 import com.vignesh.barcode.R;
 import com.vignesh.barcode.commodity.Commodity;
 import com.vignesh.barcode.commodity.CommodityOperationType;
@@ -122,14 +120,14 @@ public class UpdateCommodityFragment extends BaseFragment implements View.OnClic
             switch (commodityOperationType) {
                 case CHECK:
 
-                    String sql = "Select commmodity_id, qr_code, commodity_name, mrp_unit, quantity from commodity where qr_code ='" + qrcode+"'";
+                    String sql = "Select commmodity_id, qr_code, commodity_name, mrp_unit, stock from commodity where qr_code ='" + qrcode+"'";
                     try {
                         cursor = db.rawQuery(sql,null);
                         if(cursor != null && cursor.moveToFirst()) {
                             commodity.setCommodity_id(cursor.getInt(cursor.getColumnIndex("commmodity_id")));
                             commodity.setQr_code(cursor.getString(cursor.getColumnIndex("qr_code")));
                             commodity.setCommodity_name(cursor.getString(cursor.getColumnIndex("commodity_name")));
-                            commodity.setCommodity_stock_quantity(cursor.getInt(cursor.getColumnIndex("quantity")));
+                            commodity.setCommodity_stock_quantity(cursor.getInt(cursor.getColumnIndex("stock")));
                             commodity.setCommodity_unit_mrp(cursor.getInt(cursor.getColumnIndex("mrp_unit")));
                         }
              } catch(Exception e){
@@ -190,7 +188,7 @@ public class UpdateCommodityFragment extends BaseFragment implements View.OnClic
 
         @Override
         protected Void doInBackground(Void... params) {
-            String sql1 = "UPDATE commodity SET commodity_name ='" + commodity.getCommodity_name() + "', mrp_unit=" + commodity.getCommodity_unit_mrp() + ", quantity=" + commodity.getCommodity_stock_quantity() + ", date = '"+ commodity.getDate()+"' WHERE qr_code='" + commodity.getQr_code() + "'";
+            String sql1 = "UPDATE commodity SET commodity_name ='" + commodity.getCommodity_name() + "', mrp_unit=" + commodity.getCommodity_unit_mrp() + ", stock=" + commodity.getCommodity_stock_quantity() + ", date = '"+ commodity.getDate()+"' WHERE qr_code='" + commodity.getQr_code() + "'";
             try{
                 db.execSQL(sql1);
             }catch (Exception e){
