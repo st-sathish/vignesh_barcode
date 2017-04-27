@@ -1,6 +1,7 @@
 package com.vignesh.barcode;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.vignesh.barcode.databases.DatabaseManager;
 
@@ -59,21 +61,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void checkLogin() {
 
-//        String[] selectionArg = new String[2];
-//        selectionArg[0] = mUsername.getText().toString();
-//        selectionArg[1] = mPassword.getText().toString();
-//        Cursor cursor = db.rawQuery("SELECT * FROM user where username = ? and password = ?", selectionArg);
-//        if(null != cursor && cursor.getCount() > 0) {
-//            Intent intent = new Intent(this, LandingPageActivity.class);
-//            startActivity(intent);
-//            Toast.makeText(getBaseContext(),"Successfully login",Toast.LENGTH_SHORT).show();
-//         cursor.close();
-//        } else {
-//            Toast.makeText(getBaseContext(),"invalid username", Toast.LENGTH_SHORT).show();
-//        }
-
-        Intent intent = new Intent(this, LandingPageActivity.class);
-        startActivity(intent);
+        String[] selectionArg = new String[2];
+        selectionArg[0] = mUsername.getText().toString();
+        selectionArg[1] = mPassword.getText().toString();
+        Cursor cursor = db.rawQuery("SELECT * FROM user where username = ? and password = ?", selectionArg);
+        if(null != cursor && cursor.getCount() > 0) {
+            Intent intent = new Intent(this, LandingPageActivity.class);
+            startActivity(intent);
+            Toast.makeText(getBaseContext(),"Successfully login", Toast.LENGTH_SHORT).show();
+            cursor.close();
+        } else {
+            Toast.makeText(getBaseContext(),"invalid username", Toast.LENGTH_SHORT).show();
+        }
 
     }
 }

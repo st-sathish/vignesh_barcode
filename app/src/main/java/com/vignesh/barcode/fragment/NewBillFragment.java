@@ -134,8 +134,7 @@ public class NewBillFragment extends  BaseFragment implements View.OnClickListen
                 doScan();
                 break;
             case R.id.clear:
-                commodityid.setText("");
-                quantity.setText("");
+                doClear();
                 break;
             case R.id.total:
                 //getAmount();
@@ -184,7 +183,14 @@ public class NewBillFragment extends  BaseFragment implements View.OnClickListen
                 empty = "0";
                 break;
         }
-        editText.setText(editText.getText().toString().concat(empty));
+        //editText.setText(editText.getText().toString().concat(empty));
+    }
+
+    public void doClear() {
+        commodityid.setText("");
+        quantity.setText("");
+        tv_mrp.setText("");
+        tv_name.setText("");
     }
 
     public void doScan() {
@@ -198,6 +204,7 @@ public class NewBillFragment extends  BaseFragment implements View.OnClickListen
         if (scanResult != null) {
             // handle scan result
             Toast.makeText(getActivity(), scanResult.getContents(), Toast.LENGTH_LONG).show();
+            getData(scanResult.getContents());
         }
         // else continue with any other code you need in the method
     }
@@ -206,19 +213,51 @@ public class NewBillFragment extends  BaseFragment implements View.OnClickListen
         String name = tv_name.getText().toString();
         String mrp = tv_mrp.getText().toString();
         String noOfItem = quantity.getText().toString();
+        String qrcode = commodityid.getText().toString();
+        if(qrcode.equals("")) {
+            commodityid.setError("Qr code shouldn't be empty");
+            return;
+        }
+        if(name.equals("")) {
+            tv_name.setError("Name shouldn't be empty");
+            return;
+        }
+        if(mrp.equals("")) {
+            tv_mrp.setError("Mrp value shouldn't be empty");
+            return;
+        }
+        if(noOfItem.equals("")) {
+            noOfItem = "1";
+        }
         int totalAmount = Integer.parseInt(mrp) * Integer.parseInt(noOfItem);
         String date = DateUtils.getCurrentDate();
+        String sql1 = "Select commmodity_id from commodity where qr_code ='" + qrcode+"'";
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(sql1, null);
+            if(cursor != null && cursor.moveToFirst()) {
+                id = cursor.getInt(cursor.getColumnIndex("commmodity_id"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally{
+            if(cursor != null) {
+                cursor.close();
+            }
+        }
         String sql = "insert into bill (commodity_id ,total_amount , billed_at ,quantity  ) values (" + id + "," + totalAmount + ",'" + date + "'," + noOfItem + ")";
         try {
             db.execSQL(sql);
+            Toast.makeText(getActivity(),"Successfully Added", Toast.LENGTH_LONG).show();
+            doClear();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void getData (String commodity_id){
+    public void getData (String qr_code){
 
-        check_value = commodity_id;
+        check_value = qr_code;
 
         String sql1 = "Select commodity_name,commmodity_id, mrp_unit from commodity where qr_code ='" + check_value +"'";
         try {
@@ -229,6 +268,7 @@ public class NewBillFragment extends  BaseFragment implements View.OnClickListen
                 int mrp = cursor.getInt(cursor.getColumnIndex("mrp_unit"));
                 tv_name.setText(name);
                 tv_mrp.setText(String.valueOf(mrp));
+                commodityid.setText(qr_code);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -244,7 +284,7 @@ public class NewBillFragment extends  BaseFragment implements View.OnClickListen
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
                 // connected to wifi
                 PrintManager printManager = (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);
-                printManager.print("My document", new CustomPrintAdapter(getActivity()), null);
+                //printManager.print("My document", new CustomPrintAdapter(getActivity()), null);
             } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
                 // connected to the mobile provider's data plan
                 Toast.makeText(getActivity(), activeNetwork.getTypeName(), Toast.LENGTH_SHORT).show();
@@ -255,9 +295,14 @@ public class NewBillFragment extends  BaseFragment implements View.OnClickListen
     }
 
     public void pressnext(){
-        BillProcess billProcess = new BillProcess();
+        /*BillProcess billProcess = new BillProcess();
         BillProcessAsyncTask billProcessAsyncTask = new BillProcessAsyncTask(billProcess, CommodityOperationType.ADD);
-        billProcessAsyncTask.execute();
+        billProcessAsyncTask.execute();*/
+        commodityid.setText("");
+        quantity.setText("");
+        tv_mrp.setText("");
+        tv_name.setText("");
+        doScan();
     }
 
     @Override
