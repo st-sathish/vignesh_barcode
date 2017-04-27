@@ -54,7 +54,6 @@ public class DailyReportFragment extends BaseFragment  {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         mParentView = inflater.inflate(R.layout.daily_report, container, false);
 
-        qr_code = (EditText) mParentView.findViewById(R.id.show_id);
         billProcessList = new ArrayList<>();
         listView = (ListView) mParentView.findViewById(R.id.lv_daily_report);
         mBillAdapter = new BillAdapter(getContext(), billProcessList);

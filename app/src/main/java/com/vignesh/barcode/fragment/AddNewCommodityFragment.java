@@ -128,7 +128,7 @@ public class AddNewCommodityFragment extends BaseFragment implements View.OnClic
         protected Void doInBackground(Void... voids) {
             switch (addOperationType) {
                 case ADD:
-                    String sql = "insert into commodity (qr_code ,commodity_name , mrp_unit ,quantity, date  ) values (" + commodity.getQr_code() + ",'" + commodity.getCommodity_name() + "'," + commodity.getCommodity_unit_mrp() + "," + commodity.getCommodity_stock_quantity() + ",'"+ commodity.getDate()+"')";
+                    String sql = "insert into commodity (qr_code ,commodity_name , mrp_unit ,stock, date  ) values (" + commodity.getQr_code() + ",'" + commodity.getCommodity_name() + "'," + commodity.getCommodity_unit_mrp() + "," + commodity.getCommodity_stock_quantity() + ",'"+ commodity.getDate()+"')";
                     try {
                         db.execSQL(sql);
                     } catch (Exception e) {

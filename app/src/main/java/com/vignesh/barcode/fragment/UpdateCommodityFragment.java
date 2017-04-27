@@ -29,17 +29,17 @@ import static com.vignesh.barcode.R.id.commodity_name;
  * Created by sysadmin on 23/3/17.
  */
 
-public class UpdateCommodityFargment extends BaseFragment implements View.OnClickListener{
+public class UpdateCommodityFragment extends BaseFragment implements View.OnClickListener{
 
     EditText editText_qrcode,editText_comName,editText_comMrp,editText_comQuentity,editText_date;
     Button button_update,button_home,button_logout,button_search;
     SQLiteDatabase db;
 
-    public UpdateCommodityFargment(){
+    public UpdateCommodityFragment(){
 
     }
-    public static UpdateCommodityFargment newInstance(String aTitle) {
-        UpdateCommodityFargment fragment = new UpdateCommodityFargment();
+    public static UpdateCommodityFragment newInstance(String aTitle) {
+        UpdateCommodityFragment fragment = new UpdateCommodityFragment();
         Bundle bundle = new Bundle();
         bundle.putString(AppConstants.INTENT_PARAM_ONE, aTitle);
         fragment.setArguments(bundle);
@@ -58,11 +58,11 @@ public class UpdateCommodityFargment extends BaseFragment implements View.OnClic
 
 
         button_update = (Button) mParentView.findViewById(R.id.add_commodity12);
-        button_home = (Button) mParentView.findViewById(R.id.home);
+        //button_home = (Button) mParentView.findViewById(R.id.home);
         //button_logout = (Button) mParentView.findViewById(R.id.logout);
         button_search = (Button) mParentView.findViewById(R.id.button_search);
-        button_logout.setOnClickListener(this);
-        button_home.setOnClickListener(this);
+        //button_logout.setOnClickListener(this);
+        //button_home.setOnClickListener(this);
         button_update.setOnClickListener(this);
         button_search.setOnClickListener(this);
         db = DatabaseManager.getInstance().openDatabase();
@@ -157,7 +157,6 @@ public class UpdateCommodityFargment extends BaseFragment implements View.OnClic
         String GetName = editText_comName.getText().toString();
         String GetMrp = editText_comMrp.getText().toString();
         int GetQuantity = Integer.parseInt(editText_comQuentity.getText().toString());
-        String GetDate = editText_date.getText().toString();
 
         Commodity commodity = new Commodity();
         commodity.setCommodity_name(GetName);

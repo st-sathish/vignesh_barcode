@@ -40,7 +40,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="text"
             android:ems="10"
             android:hint="Name"
             android:id="@+id/commodity_name" />

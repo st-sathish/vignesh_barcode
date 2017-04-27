@@ -1,6 +1,7 @@
 package com.vignesh.barcode.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
@@ -18,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.vignesh.barcode.R;
 import com.vignesh.barcode.SessionStore;
 import com.vignesh.barcode.adapter.BillAdapter;
@@ -28,6 +31,7 @@ import com.vignesh.barcode.commodity.CommodityOperationType;
 import com.vignesh.barcode.databases.DatabaseManager;
 import com.vignesh.barcode.extras.AppConstants;
 import com.vignesh.barcode.extras.DateUtils;
+import com.vignesh.barcode.extras.FragmentIntentIntegrator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,6 +131,7 @@ public class NewBillFragment extends  BaseFragment implements View.OnClickListen
         String empty = "" ;
         switch (v.getId()){
             case R.id.scan:
+                doScan();
                 break;
             case R.id.clear:
                 commodityid.setText("");
@@ -178,14 +183,24 @@ public class NewBillFragment extends  BaseFragment implements View.OnClickListen
             case R.id.zero:
                 empty = "0";
                 break;
-
-
-
         }
         editText.setText(editText.getText().toString().concat(empty));
-
     }
 
+    public void doScan() {
+        FragmentIntentIntegrator integrator = new FragmentIntentIntegrator(NewBillFragment.this);integrator.initiateScan();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        System.out.println("never here");
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if (scanResult != null) {
+            // handle scan result
+            Toast.makeText(getActivity(), scanResult.getContents(), Toast.LENGTH_LONG).show();
+        }
+        // else continue with any other code you need in the method
+    }
 
     public void pressNewBill() {
         String name = tv_name.getText().toString();
@@ -209,14 +224,11 @@ public class NewBillFragment extends  BaseFragment implements View.OnClickListen
         try {
             cursor = db.rawQuery(sql1,null);
             if (cursor.getCount() > 0 && cursor.moveToFirst()){
-                Toast.makeText(getContext(),"name",Toast.LENGTH_LONG).show();
                 String name = cursor.getString(cursor.getColumnIndex("commodity_name"));
-                Toast.makeText(getContext(),"name" +name,Toast.LENGTH_LONG).show();
                 id = cursor.getInt(cursor.getColumnIndex("commmodity_id"));
                 int mrp = cursor.getInt(cursor.getColumnIndex("mrp_unit"));
                 tv_name.setText(name);
                 tv_mrp.setText(String.valueOf(mrp));
-                Toast.makeText(getContext(),"name" +name,Toast.LENGTH_LONG).show();
             }
         }catch (Exception e){
             e.printStackTrace();

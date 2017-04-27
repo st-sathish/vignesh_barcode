@@ -2,6 +2,7 @@ package com.vignesh.barcode;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -11,20 +12,25 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.vignesh.barcode.fragment.AddNewCommodityFragment;
 import com.vignesh.barcode.fragment.DailyReportFragment;
 import com.vignesh.barcode.fragment.MenuFragment;
 import com.vignesh.barcode.fragment.NewBillFragment;
 import com.vignesh.barcode.fragment.StockFragment;
+import com.vignesh.barcode.fragment.UpdateCommodityFragment;
 import com.vignesh.barcode.fragment.TermsAndServicesFragment;
-import com.vignesh.barcode.fragment.UpdateCommodityFargment;
+
 
 
 /**
  * Created by sysadmin on 23/3/17.
  */
 
-public class LandingPageActivity extends BaseActivity  implements View.OnClickListener {
+public class LandingPageActivity extends BaseActivity {
 
     public static final int FRAGMENT_MENU = 0;
     public static final int FRAGMENT_NEW_BILL = 1;
@@ -38,24 +44,13 @@ public class LandingPageActivity extends BaseActivity  implements View.OnClickLi
     Fragment fragment = null;
     String title = null, url = "";
     boolean addToBackstack = true;
-    Button button1,button2,button3;
+    Button button1, button2, button3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_landing_page);
         displayView(FRAGMENT_MENU, "menu");
-
-        //button1 = (Button) findViewById(R.id.butQR);
-        //button2 = (Button) findViewById(R.id.butProd);
-        //button3 = (Button) findViewById(R.id.butOther);
-
-        //button3 = (Button) findViewById(R.id.next);
-        /*ActivityCompat.requestPermissions(LandingPageActivity.this, new
-                String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);*/
-        //button2.setOnClickListener(this);
-       // button3.setOnClickListener(this);
-
     }
 
     public void displayView(int position, String aTitle) {
@@ -86,7 +81,7 @@ public class LandingPageActivity extends BaseActivity  implements View.OnClickLi
                 fragment = TermsAndServicesFragment.newInstance(title);
                 break;
             case FRAGMENT_UPDATE_COMMODITY:
-                fragment = UpdateCommodityFargment.newInstance(title);
+                fragment = UpdateCommodityFragment.newInstance(title);
                 break;
             case FRAGMENT_STOCK:
                 fragment = StockFragment.newInstance(title);
@@ -109,9 +104,9 @@ public class LandingPageActivity extends BaseActivity  implements View.OnClickLi
     }
 
     public void goNext() {
-        if(SessionStore.scancode.equals("")) {
-            Toast.makeText(this,"Please do Scan",Toast.LENGTH_LONG).show();
-           // return;
+        if (SessionStore.scancode.equals("")) {
+            Toast.makeText(this, "Please do Scan", Toast.LENGTH_LONG).show();
+            // return;
         }
         Fragment fragment = NewBillFragment.newInstance("New Bill");
         switchContent(fragment, "New Bill", false);
@@ -121,24 +116,6 @@ public class LandingPageActivity extends BaseActivity  implements View.OnClickLi
         ActionBar actionBar = getSupportActionBar();
         if (null != actionBar) {
             actionBar.setTitle(title);
-        }
-    }
-
-    public void handleClick(View view){
-        Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-        intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
-        startActivityForResult(intent, 0); //Barcode Scanner to scan for us
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == 0) {
-            if (resultCode == RESULT_OK) {
-                String result = intent.getStringExtra("SCAN_RESULT_FORMAT");
-                SessionStore.scancode = intent.getStringExtra("SCAN_RESULT");
-            } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(this,"Press a button to start a scan.",Toast.LENGTH_LONG).show();
-                Toast.makeText(this,"Scan cancelled.",Toast.LENGTH_LONG).show();
-            }
         }
     }
 
@@ -154,18 +131,6 @@ public class LandingPageActivity extends BaseActivity  implements View.OnClickLi
                 } else {
                     Toast.makeText(LandingPageActivity.this, "Permission Denied!", Toast.LENGTH_SHORT).show();
                 }
-        }
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch(view.getId()) {
-            /*case R.id.butProd:
-                handleClick(view);
-                break;
-            case R.id.next:
-                goNext();
-                break;*/
         }
     }
 }

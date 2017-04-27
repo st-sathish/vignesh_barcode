@@ -49,17 +49,17 @@ public class StockFragment extends BaseFragment implements View.OnClickListener 
         mParentView = inflater.inflate(R.layout.checkcommodity, container, false);
 
 //        commodity_id12 = (EditText) mParentView.findViewById(R.id.check_id);
-        editText_qr_code = (EditText) mParentView.findViewById(R.id.show_id);
-        editText_stock = (EditText) mParentView.findViewById(R.id.et_stock);
+        editText_qr_code = (EditText) mParentView.findViewById(R.id.commodity_id);
+        editText_stock = (EditText) mParentView.findViewById(R.id.commodity_quantity);
 //        commodity_name1 = (EditText) mParentView.findViewById(R.id.name_commodity);
 //        mrp1 = (EditText) mParentView.findViewById(R.id.mrp_quentity);
 //        quanty1 = (EditText) mParentView.findViewById(R.id.et_quantity);
 
-        search = (Button) mParentView.findViewById(R.id.search);
-        update = (Button) mParentView.findViewById(R.id.button_update);
-        logout = (Button) mParentView.findViewById(R.id.end);
+        search = (Button) mParentView.findViewById(R.id.button_search);
+        update = (Button) mParentView.findViewById(R.id.add_commodity12);
+        //logout = (Button) mParentView.findViewById(R.id.end);
         update.setOnClickListener(this);
-        logout.setOnClickListener(this);
+        //logout.setOnClickListener(this);
         search.setOnClickListener(this);
 
         db = DatabaseManager.getInstance().openDatabase();
@@ -69,14 +69,14 @@ public class StockFragment extends BaseFragment implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.search:
+            case R.id.button_search:
                 getData();
                 break;
             case R.id.end:
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.button_update:
+            case R.id.add_commodity12:
                 setData();
                 break;
         }
@@ -113,7 +113,7 @@ public class StockFragment extends BaseFragment implements View.OnClickListener 
             Integer quantity = 0;
             switch (commodityOperationType) {
                 case CHECK:
-                    String sql = "Select quantity from commodity where qr_code ='" + find+"'";
+                    String sql = "Select stock from commodity where qr_code ='" + find+"'";
                     try {
                         cursor = db.rawQuery(sql,null);
                         if(cursor.moveToFirst()) {
@@ -136,7 +136,7 @@ public class StockFragment extends BaseFragment implements View.OnClickListener 
     }
 
     public  void setData(){
-        String sql1 = "UPDATE commodity SET quantity =" + Integer.parseInt(editText_stock.getText().toString()) + " WHERE qr_code='" + find + "'";
+        String sql1 = "UPDATE commodity SET stock =" + Integer.parseInt(editText_stock.getText().toString()) + " WHERE qr_code='" + find + "'";
         db.execSQL(sql1);
         switchFragment(LandingPageActivity.FRAGMENT_MENU, "Menu");
     }
