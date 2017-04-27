@@ -45,7 +45,6 @@ public class BillProcessAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-        TextView textView_id = (TextView) view.findViewById(R.id.tv_commodity_id);
         TextView textView_name = (TextView) view.findViewById(R.id.tv_commodity_name);
         TextView textView_mrp = (TextView) view.findViewById(R.id.tv_commodity_rate);
         TextView textView_quantity = (TextView) view.findViewById(R.id.tv_commodity_quantity);
@@ -55,14 +54,9 @@ public class BillProcessAdapter extends CursorAdapter {
         String mrp = cursor.getString(cursor.getColumnIndex("mrp_unit"));
         //String quantity = cursor.getString(cursor.getColumnIndex("stock_quantity"));
 
-        String id = textView_id.getText().toString();
-        String amount = "";
-
-        textView_id.setText(id);
         textView_name.setText(name);
         textView_mrp.setText(mrp);
         textView_quantity.setText(textView_quantity.getText().toString());
-        textView_final_amount.setText(amount);
     }
 
 

@@ -42,18 +42,20 @@ import java.util.List;
 
 public class NewBillFragment extends  BaseFragment implements View.OnClickListener,View.OnFocusChangeListener {
 
-    TextView textView,tv_name, tv_mrp;
+    TextView tv_name, tv_mrp;
     Button scan,clear,total,next,print,newbill,one,two,three,four,five,six,seven,eight,nine,zero,search;
     EditText commodityid,quantity,calculating;
     ListView listView;
     int id;
     BillAdapter mBillAdapter;
-    List<Commodity> billProcessList;
+    List<BillProcess> billProcessList;
 
     SQLiteDatabase db;
     Cursor cursor = null;
     EditText editText = null;
     String check_value;
+    int overallTotal = 0;
+    TextView total_amount_tv;
 
     public NewBillFragment(){
 
@@ -77,9 +79,9 @@ public class NewBillFragment extends  BaseFragment implements View.OnClickListen
         quantity = (EditText) mParentView.findViewById(R.id.howmuch);
         commodityid.setOnFocusChangeListener(this);
         quantity.setOnFocusChangeListener(this);
-        textView = (TextView) mParentView.findViewById(R.id.totalamount);
         tv_name = (TextView) mParentView.findViewById(R.id.com_name);
         tv_mrp = (TextView) mParentView.findViewById(R.id.com_mrp);
+        total_amount_tv = (TextView) mParentView.findViewById(R.id.totalamount);
 
         one = (Button) mParentView.findViewById(R.id.one);
         two = (Button) mParentView.findViewById(R.id.two);
@@ -122,6 +124,9 @@ public class NewBillFragment extends  BaseFragment implements View.OnClickListen
         billProcessList = new ArrayList<>();
         listView = (ListView) mParentView.findViewById(R.id.bill_report);
         db = DatabaseManager.getInstance().openDatabase();
+
+        mBillAdapter = new BillAdapter(getContext(), billProcessList);
+        listView.setAdapter(mBillAdapter);
         return mParentView;
 
     }
@@ -137,7 +142,7 @@ public class NewBillFragment extends  BaseFragment implements View.OnClickListen
                 doClear();
                 break;
             case R.id.total:
-                //getAmount();
+                //total_amount_tv.setText(String.valueOf(overallTotal));
                 break;
             case R.id.next:
                 pressnext();
@@ -191,6 +196,7 @@ public class NewBillFragment extends  BaseFragment implements View.OnClickListen
         quantity.setText("");
         tv_mrp.setText("");
         tv_name.setText("");
+        overallTotal = 0;
     }
 
     public void doScan() {
@@ -230,6 +236,8 @@ public class NewBillFragment extends  BaseFragment implements View.OnClickListen
             noOfItem = "1";
         }
         int totalAmount = Integer.parseInt(mrp) * Integer.parseInt(noOfItem);
+        overallTotal += totalAmount;
+        total_amount_tv.setText(String.valueOf(overallTotal));
         String date = DateUtils.getCurrentDate();
         String sql1 = "Select commmodity_id from commodity where qr_code ='" + qrcode+"'";
         Cursor cursor = null;
@@ -249,6 +257,14 @@ public class NewBillFragment extends  BaseFragment implements View.OnClickListen
         try {
             db.execSQL(sql);
             Toast.makeText(getActivity(),"Successfully Added", Toast.LENGTH_LONG).show();
+            BillProcess billProcess = new BillProcess();
+            billProcess.setQuantity(Integer.valueOf(noOfItem));
+            billProcess.setBilledAt(date);
+            billProcess.setTotalAmount(totalAmount);
+            billProcess.setCommodity_unit_mrp(Integer.valueOf(mrp));
+            billProcess.setCommodity_name(name);
+            billProcessList.add(billProcess);
+            mBillAdapter.refresh(billProcessList);
             doClear();
         } catch (Exception e) {
             e.printStackTrace();
@@ -278,7 +294,7 @@ public class NewBillFragment extends  BaseFragment implements View.OnClickListen
     }
 
     public void printDocument() {
-        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        /*ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         if (activeNetwork != null) { // connected to the internet
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
@@ -291,7 +307,8 @@ public class NewBillFragment extends  BaseFragment implements View.OnClickListen
             }
         } else {
             Toast.makeText(getActivity(), "printer not found", Toast.LENGTH_SHORT).show();
-        }
+        }*/
+        Toast.makeText(getActivity(), "printer not found", Toast.LENGTH_SHORT).show();
     }
 
     public void pressnext(){
@@ -317,7 +334,7 @@ public class NewBillFragment extends  BaseFragment implements View.OnClickListen
 
     }
 
-    public class BillProcessAsyncTask extends AsyncTask<Void, Void, List<Commodity>> {
+    /*public class BillProcessAsyncTask extends AsyncTask<Void, Void, List<BillProcess>> {
 
         CommodityOperationType commodityOperationType;
         BillProcess billProcess;
@@ -372,12 +389,10 @@ public class NewBillFragment extends  BaseFragment implements View.OnClickListen
 
         @Override
         protected void onPostExecute(List<Commodity> billProcessList) {
-            //mBillAdapter = new BillAdapter(getContext(), billProcessList);
-            //listView.setAdapter(mBillAdapter);
             Toast.makeText(getContext(),"commodity add successful",Toast.LENGTH_LONG).show();
-            //mBillAdapter.refresh(billProcessList);
+            mBillAdapter.refresh(billProcessList);
         }
-    }
+    }*/
 
 
 

@@ -49,17 +49,14 @@ public class BillAdapter extends BaseAdapter {
         if(convertView == null){
             convertView = LayoutInflater.from(mContexts).inflate(R.layout.item_bill_process, parent, false);
         }
-        TextView textView_id = (TextView) convertView.findViewById(R.id.tv_commodity_id);
         TextView textView_name = (TextView) convertView.findViewById(R.id.tv_commodity_name);
         TextView textView_mrp = (TextView) convertView.findViewById(R.id.tv_commodity_rate);
         TextView textView_quantity = (TextView) convertView.findViewById(R.id.tv_commodity_quantity);
-        TextView textView_date = (TextView) convertView.findViewById(R.id.tv_commodity_date);
         TextView textView_final_amount = (TextView) convertView.findViewById(R.id.tv_commodity_final_amount);
 
         textView_name.setText(billProcess.getCommodity_name());
         textView_mrp.setText(String.valueOf(billProcess.getCommodity_unit_mrp()));
         textView_quantity.setText(String.valueOf(billProcess.getQuantity()));
-        textView_date.setText(billProcess.getDate());
         textView_final_amount.setText(String.valueOf(billProcess.getTotalAmount()));
 
         return convertView;
